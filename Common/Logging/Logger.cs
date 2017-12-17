@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using NLog;
 using NLog.Config;
 
@@ -16,38 +17,19 @@ namespace Common.Logging
         public Logger(ILoggingConfig config)
         {
             desiredLogLevel = config.LogLevel;
-            if (string.IsNullOrEmpty(config.NlogConfigFileName))
-            {
-                loggerFactory = new LogFactory();
-                variableLogger = loggerFactory.GetLogger("customLogger");
-                variableErrorLogger = loggerFactory.GetLogger("customErrorLogger");
-            }
-            else
-            {
-                loggerFactory = new LogFactory(new XmlLoggingConfiguration(config.NlogConfigFileName));
-                variableLogger = loggerFactory.GetLogger("messageLogger");
-                variableErrorLogger = loggerFactory.GetLogger("errorLogger");
-            }
+            
+            var normalizer = new PathNormalizer();
+            var path = normalizer.Normalize(config.NlogConfigFileName);
+            loggerFactory = new LogFactory(new XmlLoggingConfiguration(path));
+            variableLogger = loggerFactory.GetLogger("messageLogger");
+            variableErrorLogger = loggerFactory.GetLogger("errorLogger");
+            
         }
 
 
         public void Debug(string sourceType, string sourceMethod, string message, params object[] args)
         {
             TraceMessageInternal(LogLvl.Debug, FormatMessageWithSource(sourceType, sourceMethod, message, args));
-        }
-
-        public void Log(LogLvl logLevel, string source, string message, Exception exception)
-        {
-            if (exception == null && message == null) return;
-
-            if (exception != null)
-            {
-                TraceErrorInternal(exception, source);
-            }
-            else
-            {
-                TraceMessageInternal(logLevel, FormatMessageWithSource(source, null, "{0}", message));
-            }
         }
 
         public void Info(string sourceType, string sourceMethod, string message, params object[] args)
@@ -64,12 +46,6 @@ namespace Common.Logging
         {
             var source = FormatSource(type, method);
             TraceErrorInternal(exception, source: source);
-        }
-
-        public void Error(string type, string method, Exception exception, Dictionary<string, object> customProperties)
-        {
-            var source = FormatSource(type, method);
-            TraceErrorInternal(exception, source: source, customProperties: customProperties);
         }
 
         public void Error(string type, string method, Exception exception, string message)
@@ -140,12 +116,6 @@ namespace Common.Logging
 
             variableErrorLogger.Log(eventInfo);
         }
-
-        private string FormatMessage(string message, params object[] args)
-        {
-            return string.Format(message, args);
-        }
-
         private string FormatMessageWithSource(string sourceType, string sourceMethod, string message, params object[] args)
         {
             var sourceDeclaration = sourceMethod == null ? $"[{sourceType}]" : $"[{sourceType}/{sourceMethod}]";

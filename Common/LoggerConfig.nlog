@@ -2,10 +2,6 @@
 <nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       throwExceptions="true">
-  <extensions>
-    <add assembly="Microsoft.ApplicationInsights.NLogTarget" />
-  </extensions>
-
   <targets>
     <target xsi:type="BufferingWrapper"
             name="BufferedFileLogger"
@@ -15,26 +11,7 @@
       <target name="FileLogger" xsi:type="File"
             layout="${date} [${level}]&#9; ${event-properties:item=Source} ${message} ${exception:format=toString}"
             archiveFileName="${basedir}/App_Data/LogFile.{#}.log"
-            fileName="${basedir}/App_Data/LogFile_on_1${shortdate}.log"
-            archiveNumbering="DateAndSequence"
-            archiveAboveSize="20971520"
-            archiveDateFormat="yyyyMMdd"
-            maxArchiveFiles="7"
-            encoding="utf-8">
-      </target>
-
-    </target>
-
-
-    <target xsi:type="BufferingWrapper"
-            name="CustomBufferedFileLogger"
-            bufferSize="20"
-            slidingTimeout="True"
-            flushTimeout="1000">
-      <target name="CustomLogger" xsi:type="File"
-            layout="${date} [${level}]&#9; ${event-properties:item=Source} ${message} ${exception:format=toString}"
-            archiveFileName="${var:logDirectory}/LogFile.{#}.log"
-            fileName="${var:logDirectory}/LogFile_on_${shortdate}.log"
+            fileName="${basedir}/App_Data/LogFile_on_${shortdate}.log"
             archiveNumbering="DateAndSequence"
             archiveAboveSize="20971520"
             archiveDateFormat="yyyyMMdd"
@@ -45,8 +22,6 @@
   </targets>
   <rules>
     <logger name="errorLogger" writeTo="BufferedFileLogger" />
-    <logger name="customErrorLogger" writeTo="CustomBufferedFileLogger" />
     <logger name="messageLogger" writeTo="BufferedFileLogger" />
-    <logger name="customLogger" writeTo="CustomBufferedFileLogger" />
   </rules>
 </nlog>
