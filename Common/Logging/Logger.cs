@@ -1,8 +1,11 @@
-﻿using System;
+﻿#region Usings
+
+using System;
 using System.Collections.Generic;
-using System.IO;
 using NLog;
 using NLog.Config;
+
+#endregion
 
 namespace Common.Logging
 {
@@ -17,13 +20,12 @@ namespace Common.Logging
         public Logger(ILoggingConfig config)
         {
             desiredLogLevel = config.LogLevel;
-            
+
             var normalizer = new PathNormalizer();
             var path = normalizer.Normalize(config.NlogConfigFileName);
             loggerFactory = new LogFactory(new XmlLoggingConfiguration(path));
             variableLogger = loggerFactory.GetLogger("messageLogger");
             variableErrorLogger = loggerFactory.GetLogger("errorLogger");
-            
         }
 
 
@@ -85,12 +87,12 @@ namespace Common.Logging
                                         Dictionary<string, object> customProperties = null)
         {
             var eventInfo = new LogEventInfo
-            {
-                Exception = ex,
-                Level = NLog.LogLevel.Error,
-                LoggerName = variableErrorLogger.Name,
-                Message = additionalMessage
-            };
+                            {
+                                Exception = ex,
+                                Level = LogLevel.Error,
+                                LoggerName = variableErrorLogger.Name,
+                                Message = additionalMessage
+                            };
             if (!string.IsNullOrEmpty(source))
             {
                 eventInfo.Properties.Add("Source", source);
@@ -116,6 +118,7 @@ namespace Common.Logging
 
             variableErrorLogger.Log(eventInfo);
         }
+
         private string FormatMessageWithSource(string sourceType, string sourceMethod, string message, params object[] args)
         {
             var sourceDeclaration = sourceMethod == null ? $"[{sourceType}]" : $"[{sourceType}/{sourceMethod}]";

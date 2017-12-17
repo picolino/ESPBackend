@@ -1,5 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region Usings
+
+using System;
+
+#endregion
 
 namespace Common.Logging
 {

@@ -1,4 +1,8 @@
-﻿using System.Web.Hosting;
+﻿#region Usings
+
+using System.Web.Hosting;
+
+#endregion
 
 namespace Common
 {

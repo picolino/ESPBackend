@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region Usings
+
+using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Reflection;
 using System.Web.Http;
 using Common.Logging;
 using ESPBackend.Dto;
+
+#endregion
 
 namespace ESPBackend.Controllers
 {
