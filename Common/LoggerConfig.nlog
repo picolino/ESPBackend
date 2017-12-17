@@ -42,12 +42,10 @@
             encoding="utf-8">
       </target>
     </target>
-
-    <target type="ApplicationInsightsTarget" name="AppInsights" />
   </targets>
   <rules>
-    <logger name="errorLogger" writeTo="BufferedFileLogger,AppInsights" />
-    <logger name="customErrorLogger" writeTo="CustomBufferedFileLogger,AppInsights" />
+    <logger name="errorLogger" writeTo="BufferedFileLogger" />
+    <logger name="customErrorLogger" writeTo="CustomBufferedFileLogger" />
     <logger name="messageLogger" writeTo="BufferedFileLogger" />
     <logger name="customLogger" writeTo="CustomBufferedFileLogger" />
   </rules>
