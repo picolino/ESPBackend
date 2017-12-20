@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESPBackend.DataAccessLayer"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{2C5A8994-4469-4EC6-AFA0-B56816A1D0FE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthorizationService", "AuthorizationService", "{C6712D86-3F77-48F5-A3EB-513589FBB75D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authorization", "Authorization\Authorization.csproj", "{6A4E3AEF-5BFF-4F29-A2AF-8FC3612DF43E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,9 +49,16 @@ Global
 		{2C5A8994-4469-4EC6-AFA0-B56816A1D0FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C5A8994-4469-4EC6-AFA0-B56816A1D0FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C5A8994-4469-4EC6-AFA0-B56816A1D0FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A4E3AEF-5BFF-4F29-A2AF-8FC3612DF43E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A4E3AEF-5BFF-4F29-A2AF-8FC3612DF43E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A4E3AEF-5BFF-4F29-A2AF-8FC3612DF43E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A4E3AEF-5BFF-4F29-A2AF-8FC3612DF43E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6A4E3AEF-5BFF-4F29-A2AF-8FC3612DF43E} = {C6712D86-3F77-48F5-A3EB-513589FBB75D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C864046C-995D-4674-AAD0-E34A57FF7867}
