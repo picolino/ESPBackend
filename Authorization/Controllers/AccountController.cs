@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
 using Authorization.Models;
+using Authorization.Providers;
 using Microsoft.AspNet.Identity;
 
 namespace Authorization.Controllers

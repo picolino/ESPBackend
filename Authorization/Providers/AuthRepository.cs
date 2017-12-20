@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Authorization.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace Authorization.Models
+namespace Authorization.Providers
 {
     public class AuthRepository : IDisposable
     {

@@ -3,6 +3,7 @@
 using System;
 using Authorization;
 using Authorization.Models;
+using Authorization.Providers;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
