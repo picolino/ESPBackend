@@ -12,7 +12,7 @@ using ESPBackend.Dto;
 
 namespace ESPBackend.Controllers
 {
-    [Authorize]
+    [AllowAnonymous]
     [RoutePrefix("api/v1/health")]
     public class HealthController : ApiController
     {
