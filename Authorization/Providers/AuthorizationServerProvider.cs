@@ -2,6 +2,7 @@
 
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security.OAuth;
 
 #endregion
@@ -19,11 +20,13 @@ namespace Authorization.Providers
         {
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
 
+            var identityUser = new IdentityUser();
+
             using (var repository = new AuthRepository())
             {
-                var user = await repository.FindUser(context.UserName, context.Password);
+                identityUser = await repository.FindUser(context.UserName, context.Password);
 
-                if (user == null)
+                if (identityUser == null)
                 {
                     context.SetError("invalid_grant", "The user name or password is incorrect.");
                     return;
@@ -31,10 +34,16 @@ namespace Authorization.Providers
             }
 
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-            identity.AddClaim(new Claim("sub", context.UserName));
-            identity.AddClaim(new Claim("role", "user"));
+            identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
+            identity.AddClaim(new Claim(ClaimTypes.Role, "user"));
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, identityUser.Id));
 
             context.Validated(identity);
         }
+
+        //public override Task TokenEndpoint(OAuthTokenEndpointContext context)
+        //{
+            
+        //}
     }
 }
