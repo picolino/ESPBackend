@@ -25,7 +25,7 @@ namespace Authorization
             app.UseOAuthAuthorizationServer(new OAuthAuthorizationServerOptions
                                             {
                                                 AllowInsecureHttp = true,
-                                                TokenEndpointPath = new PathString("/auth/token"),
+                                                TokenEndpointPath = new PathString("/token"),
                                                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
                                                 Provider = new AuthorizationServerProvider()
                                             });

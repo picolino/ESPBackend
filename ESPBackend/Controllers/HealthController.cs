@@ -20,7 +20,7 @@ namespace ESPBackend.Controllers
 
         private ILogger Logger => LoggerFactory.CreateLogger();
 
-        [HttpGet]
+        [HttpPost]
         [Route("ping")]
         public IHttpActionResult Ping()
         {

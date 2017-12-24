@@ -6,7 +6,6 @@ using Microsoft.AspNet.Identity;
 
 namespace Authorization.Controllers
 {
-    [RoutePrefix("auth")]
     public class AccountController : ApiController
     {
         private readonly AuthRepository repository;

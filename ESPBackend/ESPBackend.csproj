@@ -178,7 +178,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>16626</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/ESPBackend</IISUrl>
+          <IISUrl>http://localhost/ESPB</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
