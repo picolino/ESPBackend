@@ -136,11 +136,6 @@
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Migrations\201712210021338_Add users table.cs" />
-    <Compile Include="Migrations\201712210021338_Add users table.Designer.cs">
-      <DependentUpon>201712210021338_Add users table.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Providers\AuthorizationServerProvider.cs" />
     <Compile Include="Models\AuthDbContext.cs" />
     <Compile Include="Providers\AuthRepository.cs" />
@@ -159,11 +154,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Domain\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201712210021338_Add users table.resx">
-      <DependentUpon>201712210021338_Add users table.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

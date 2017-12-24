@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Infrastructure.Annotations;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Authorization.Models
 {
@@ -11,14 +13,23 @@ namespace Authorization.Models
 
         protected override void OnModelCreating(System.Data.Entity.DbModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            var user = modelBuilder.Entity<IdentityUser>().ToTable("Users", "dbo");
+            user.Ignore(u => u.Roles);
+            user.Ignore(u => u.Claims);
+            user.Ignore(u => u.Logins);
+            user.Ignore(u => u.LockoutEnabled);
+            user.Ignore(u => u.LockoutEndDateUtc);
+            user.Property(u => u.UserName)
+                .IsRequired()
+                .HasMaxLength(256)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("UserNameIndex") { IsUnique = true }));
+            
+            user.Property(u => u.Email).HasMaxLength(256);
 
-
-            modelBuilder.Entity<IdentityUser>().ToTable("Users", "dbo");
-            modelBuilder.Entity<IdentityRole>().ToTable("Roles", "dbo");
-            modelBuilder.Entity<IdentityUserRole>().ToTable("UserRoles", "dbo");
-            modelBuilder.Entity<IdentityUserClaim>().ToTable("UserClaims", "dbo");
-            modelBuilder.Entity<IdentityUserLogin>().ToTable("UserLogins", "dbo");
+            modelBuilder.Ignore<IdentityRole>();
+            modelBuilder.Ignore<IdentityUserRole>();
+            modelBuilder.Ignore<IdentityUserLogin>();
+            modelBuilder.Ignore<IdentityUserClaim>();
 
         }
     }
