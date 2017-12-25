@@ -13,24 +13,13 @@ namespace Authorization.Models
 
         protected override void OnModelCreating(System.Data.Entity.DbModelBuilder modelBuilder)
         {
-            var user = modelBuilder.Entity<IdentityUser>().ToTable("Users", "dbo");
-            user.Ignore(u => u.Roles);
-            user.Ignore(u => u.Claims);
-            user.Ignore(u => u.Logins);
-            user.Ignore(u => u.LockoutEnabled);
-            user.Ignore(u => u.LockoutEndDateUtc);
-            user.Property(u => u.UserName)
-                .IsRequired()
-                .HasMaxLength(256)
-                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("UserNameIndex") { IsUnique = true }));
-            
-            user.Property(u => u.Email).HasMaxLength(256);
+            base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Ignore<IdentityRole>();
-            modelBuilder.Ignore<IdentityUserRole>();
-            modelBuilder.Ignore<IdentityUserLogin>();
-            modelBuilder.Ignore<IdentityUserClaim>();
-
+            modelBuilder.Entity<IdentityUser>().ToTable("Users", "dbo");
+            modelBuilder.Entity<IdentityRole>().ToTable("Roles", "dbo");
+            modelBuilder.Entity<IdentityUserRole>().ToTable("UsersRoles", "dbo");
+            modelBuilder.Entity<IdentityUserLogin>().ToTable("UsersLogins", "dbo");
+            modelBuilder.Entity<IdentityUserClaim>().ToTable("UsersClaims", "dbo");
         }
     }
 }
