@@ -31,7 +31,7 @@ namespace Authorization.Providers
 
                     if (identityUser == null)
                     {
-                        context.SetError("invalid_grant", "The user name is incorrect.");
+                        context.SetError("invalid_grant", "The esp identifier is incorrect.");
                         return;
                     }
                 }
