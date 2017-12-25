@@ -55,9 +55,9 @@ namespace Authorization.Providers
             return user;
         }
 
-        public async Task<IdentityUser> FindEsp(string espId)
+        public async Task<IdentityUser> FindEsp(string espName)
         {
-            var user = await userManager.FindByIdAsync(espId);
+            var user = await userManager.FindByNameAsync(espName);
 
             return user;
         }

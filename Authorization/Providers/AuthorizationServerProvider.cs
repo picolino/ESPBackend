@@ -49,7 +49,7 @@ namespace Authorization.Providers
 
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
-            identity.AddClaim(new Claim(ClaimTypes.Role, "user"));
+            identity.AddClaim(new Claim(ClaimTypes.Role, context.Password == null ? "Esp" : "User"));
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, identityUser.Id));
 
             context.Validated(identity);
