@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Authorization.Models;
+using Authorization.Models.Register;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -25,6 +26,24 @@ namespace Authorization.Providers
                                 };
 
             var result = await userManager.CreateAsync(user, userModel.Password);
+            result = await userManager.AddToRoleAsync(user.Id, "User");
+
+            return result;
+        }
+
+        public async Task<IdentityResult> RegisterEsp(RegisterESPModel espModel)
+        {
+            userManager.UserValidator = new UserValidator<IdentityUser>(userManager)
+                                        {
+                                            AllowOnlyAlphanumericUserNames = false
+                                        };
+            var esp = new IdentityUser
+                       {
+                           UserName = espModel.ESPIdentifier
+                       };
+
+            var result = await userManager.CreateAsync(esp);
+            result = await userManager.AddToRoleAsync(esp.Id, "Esp");
 
             return result;
         }
@@ -32,6 +51,13 @@ namespace Authorization.Providers
         public async Task<IdentityUser> FindUser(string userName, string password)
         {
             var user = await userManager.FindAsync(userName, password);
+
+            return user;
+        }
+
+        public async Task<IdentityUser> FindEsp(string espId)
+        {
+            var user = await userManager.FindByIdAsync(espId);
 
             return user;
         }

@@ -24,13 +24,27 @@ namespace Authorization.Providers
 
             using (var repository = new AuthRepository())
             {
-                identityUser = await repository.FindUser(context.UserName, context.Password);
-
-                if (identityUser == null)
+                if (string.IsNullOrEmpty(context.Password))
                 {
-                    context.SetError("invalid_grant", "The user name or password is incorrect.");
-                    return;
+                    identityUser = await repository.FindEsp(context.UserName);
+
+                    if (identityUser == null)
+                    {
+                        context.SetError("invalid_grant", "The user name is incorrect.");
+                        return;
+                    }
                 }
+                else
+                {
+                    identityUser = await repository.FindUser(context.UserName, context.Password);
+
+                    if (identityUser == null)
+                    {
+                        context.SetError("invalid_grant", "The user name or password is incorrect.");
+                        return;
+                    }
+                }
+                
             }
 
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);

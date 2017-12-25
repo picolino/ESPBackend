@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
 using Authorization.Models;
+using Authorization.Models.Register;
 using Authorization.Providers;
 using Microsoft.AspNet.Identity;
 
@@ -17,8 +18,8 @@ namespace Authorization.Controllers
         
         [HttpPost]
         [AllowAnonymous]
-        [Route("register")]
-        public async Task<IHttpActionResult> Register(RegisterUserModel userModel)
+        [Route("user/register")]
+        public async Task<IHttpActionResult> RegisterUser(RegisterUserModel userModel)
         {
             if (!ModelState.IsValid)
             {
@@ -26,6 +27,22 @@ namespace Authorization.Controllers
             }
 
             var result = await repository.RegisterUser(userModel);
+
+            var errorResult = GetErrorResult(result);
+            return errorResult ?? Ok();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("esp/register")]
+        public async Task<IHttpActionResult> RegisterEsp(RegisterESPModel espModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await repository.RegisterEsp(espModel);
 
             var errorResult = GetErrorResult(result);
             return errorResult ?? Ok();

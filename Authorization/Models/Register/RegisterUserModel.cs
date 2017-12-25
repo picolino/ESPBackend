@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace Authorization.Models
+namespace Authorization.Models.Register
 {
     public class RegisterUserModel
     {

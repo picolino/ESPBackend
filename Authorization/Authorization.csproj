@@ -136,10 +136,11 @@
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Models\Register\RegisterESPModel.cs" />
     <Compile Include="Providers\AuthorizationServerProvider.cs" />
     <Compile Include="Models\AuthDbContext.cs" />
     <Compile Include="Providers\AuthRepository.cs" />
-    <Compile Include="Models\RegisterUserModel.cs" />
+    <Compile Include="Models\Register\RegisterUserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
