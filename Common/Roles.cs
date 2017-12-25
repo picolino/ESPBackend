@@ -1,8 +1,8 @@
 ﻿namespace Common
 {
-    public enum Roles
+    public static class Roles
     {
-        User,
-        Esp
+        public const string User = "User";
+        public const string Esp = "Esp";
     }
 }

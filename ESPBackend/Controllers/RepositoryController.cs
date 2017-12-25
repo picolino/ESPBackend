@@ -1,7 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Net.Http;
-using System.Web.Http;
+﻿using System.Web.Http;
+using Common;
 using Common.Logging;
 using ESPBackend.Domain;
 using ESPBackend.Dto;
@@ -9,7 +7,7 @@ using ESPBackend.Models;
 
 namespace ESPBackend.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = Roles.Esp)]
     [RoutePrefix("api/v1/repo")]
     public class RepositoryController : ApiController
     {

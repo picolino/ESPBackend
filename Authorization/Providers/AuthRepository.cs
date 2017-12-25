@@ -27,7 +27,7 @@ namespace Authorization.Providers
                                 };
 
             var result = await userManager.CreateAsync(user, userModel.Password);
-            result = await userManager.AddToRoleAsync(user.Id, Roles.User.ToString());
+            result = await userManager.AddToRoleAsync(user.Id, Roles.User);
 
             return result;
         }
@@ -44,7 +44,7 @@ namespace Authorization.Providers
                        };
 
             var result = await userManager.CreateAsync(esp);
-            result = await userManager.AddToRoleAsync(esp.Id, Roles.Esp.ToString());
+            result = await userManager.AddToRoleAsync(esp.Id, Roles.Esp);
 
             return result;
         }
