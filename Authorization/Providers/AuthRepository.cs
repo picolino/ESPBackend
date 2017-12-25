@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Authorization.Models;
 using Authorization.Models.Register;
+using Common;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -26,7 +27,7 @@ namespace Authorization.Providers
                                 };
 
             var result = await userManager.CreateAsync(user, userModel.Password);
-            result = await userManager.AddToRoleAsync(user.Id, "User");
+            result = await userManager.AddToRoleAsync(user.Id, Roles.User.ToString());
 
             return result;
         }
@@ -43,7 +44,7 @@ namespace Authorization.Providers
                        };
 
             var result = await userManager.CreateAsync(esp);
-            result = await userManager.AddToRoleAsync(esp.Id, "Esp");
+            result = await userManager.AddToRoleAsync(esp.Id, Roles.Esp.ToString());
 
             return result;
         }

@@ -2,6 +2,7 @@
 
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Common;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security.OAuth;
 
@@ -49,7 +50,7 @@ namespace Authorization.Providers
 
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
-            identity.AddClaim(new Claim(ClaimTypes.Role, context.Password == null ? "Esp" : "User"));
+            identity.AddClaim(new Claim(ClaimTypes.Role, context.Password == null ? Roles.Esp.ToString() : Roles.User.ToString()));
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, identityUser.Id));
 
             context.Validated(identity);

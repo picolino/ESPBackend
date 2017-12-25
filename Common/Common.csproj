@@ -53,6 +53,7 @@
     <Compile Include="Logging\LogLvl.cs" />
     <Compile Include="PathNormalizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Roles.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
