@@ -195,7 +195,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>16626</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/ESPB</IISUrl>
+          <IISUrl>http://192.168.1.37/espb</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
