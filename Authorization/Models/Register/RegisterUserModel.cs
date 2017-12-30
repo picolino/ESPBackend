@@ -7,7 +7,7 @@ namespace Authorization.Models.Register
         [Required]
         [Display(Name = "User name")]
         public string UserName { get; set; }
-
+        
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
@@ -18,5 +18,10 @@ namespace Authorization.Models.Register
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public override string ToString()
+        {
+            return $"{nameof(UserName)}: {UserName}, {nameof(Password)}: {Password}, {nameof(ConfirmPassword)}: {ConfirmPassword}";
+        }
     }
 }

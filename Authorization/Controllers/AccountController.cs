@@ -3,6 +3,7 @@ using System.Web.Http;
 using Authorization.Models;
 using Authorization.Models.Register;
 using Authorization.Providers;
+using Common.Logging;
 using Microsoft.AspNet.Identity;
 
 namespace Authorization.Controllers
@@ -10,6 +11,8 @@ namespace Authorization.Controllers
     public class AccountController : ApiController
     {
         private readonly AuthRepository repository;
+        private const string CurrentClassName = nameof(AccountController);
+        private ILogger Logger => LoggerFactory.CreateLogger();
 
         public AccountController()
         {
@@ -21,6 +24,8 @@ namespace Authorization.Controllers
         [Route("user/register")]
         public async Task<IHttpActionResult> RegisterUser(RegisterUserModel userModel)
         {
+            Logger.Info(CurrentClassName, nameof(RegisterUser), $"RegisterUser request with {userModel}");
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -37,6 +42,8 @@ namespace Authorization.Controllers
         [Route("esp/register")]
         public async Task<IHttpActionResult> RegisterEsp(RegisterESPModel espModel)
         {
+            Logger.Info(CurrentClassName, nameof(RegisterEsp), $"RegisterEsp request with {espModel}");
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
