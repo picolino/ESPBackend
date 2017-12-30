@@ -1,19 +1,14 @@
 ﻿#region Usings
 
 using System;
-using Authorization;
 using Authorization.Models;
 using Authorization.Providers;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 
 #endregion
 
-[assembly: OwinStartup(typeof(Startup))]
 namespace Authorization
 {
     public partial class Startup
