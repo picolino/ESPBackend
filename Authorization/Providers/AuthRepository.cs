@@ -44,7 +44,10 @@ namespace Authorization.Providers
                        };
 
             var result = await userManager.CreateAsync(esp);
-            result = await userManager.AddToRoleAsync(esp.Id, Roles.Esp);
+            if (result.Succeeded)
+            {
+                result = await userManager.AddToRoleAsync(esp.Id, Roles.Esp);
+            }
 
             return result;
         }
