@@ -24,7 +24,7 @@ namespace Authorization.Providers
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            Logger.Info(CurrentClassName, nameof(GrantResourceOwnerCredentials), $"User login with username: {context.UserName}");
+            Logger.Info(CurrentClassName, nameof(GrantResourceOwnerCredentials), $"Token request with username: {context.UserName} and password");
 
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
 
@@ -42,7 +42,7 @@ namespace Authorization.Providers
                 }
             }
             
-            Logger.Debug(CurrentClassName, nameof(GrantResourceOwnerCredentials), $"Successful User login with username: {context.UserName} (Id - {identityUser.Id})");
+            Logger.Debug(CurrentClassName, nameof(GrantResourceOwnerCredentials), $"Successful token with username: {context.UserName} (Id - {identityUser.Id})");
 
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
@@ -59,7 +59,7 @@ namespace Authorization.Providers
 
             var espIdentifier = context.Parameters.Get("espid");
             
-            Logger.Info(CurrentClassName, nameof(GrantCustomExtension), $"ESP login with ESP Identifier: {espIdentifier}");
+            Logger.Info(CurrentClassName, nameof(GrantCustomExtension), $"Token request with ESP Identifier: {espIdentifier}");
 
             var identityEsp = new IdentityUser();
 
@@ -83,7 +83,7 @@ namespace Authorization.Providers
 
             }
 
-            Logger.Debug(CurrentClassName, nameof(GrantCustomExtension), $"Successful ESP login with ESP Identifier: {espIdentifier} (Id - {identityEsp.Id}");
+            Logger.Debug(CurrentClassName, nameof(GrantCustomExtension), $"Successful token with ESP Identifier: {espIdentifier} (Id - {identityEsp.Id}");
 
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim(ClaimTypes.Name, espIdentifier));
