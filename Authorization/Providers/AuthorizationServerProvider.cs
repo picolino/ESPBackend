@@ -1,8 +1,10 @@
 ﻿#region Usings
 
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Common;
+using Common.Logging;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security.OAuth;
 
@@ -12,6 +14,9 @@ namespace Authorization.Providers
 {
     public class AuthorizationServerProvider : OAuthAuthorizationServerProvider
     {
+        private const string CurrentClassName = nameof(AuthorizationServerProvider);
+        private ILogger Logger => LoggerFactory.CreateLogger();
+
         public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
             context.Validated();
@@ -19,6 +24,8 @@ namespace Authorization.Providers
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
+            Logger.Info(CurrentClassName, nameof(GrantResourceOwnerCredentials), $"User login with username: {context.UserName}");
+
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
 
             var identityUser = new IdentityUser();
@@ -29,10 +36,13 @@ namespace Authorization.Providers
 
                 if (identityUser == null)
                 {
+
                     context.SetError("invalid_grant", "The user name or password is incorrect.");
                     return;
                 }
             }
+            
+            Logger.Debug(CurrentClassName, nameof(GrantResourceOwnerCredentials), $"Successful User login with username: {context.UserName} (Id - {identityUser.Id})");
 
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
@@ -44,9 +54,13 @@ namespace Authorization.Providers
 
         public override async Task GrantCustomExtension(OAuthGrantCustomExtensionContext context)
         {
+
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
 
             var espIdentifier = context.Parameters.Get("espid");
+            
+            Logger.Info(CurrentClassName, nameof(GrantCustomExtension), $"ESP login with ESP Identifier: {espIdentifier}");
+
             var identityEsp = new IdentityUser();
 
             using (var repository = new AuthRepository())
@@ -68,6 +82,8 @@ namespace Authorization.Providers
                 }
 
             }
+
+            Logger.Debug(CurrentClassName, nameof(GrantCustomExtension), $"Successful ESP login with ESP Identifier: {espIdentifier} (Id - {identityEsp.Id}");
 
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim(ClaimTypes.Name, espIdentifier));
