@@ -10,8 +10,8 @@
             flushTimeout="1000">
       <target name="FileLogger" xsi:type="File"
             layout="${date} [${level}]&#9; ${event-properties:item=Source} ${message} ${exception:format=toString}"
-            archiveFileName="${var:logDirectory}/LogFile.{#}.log"
-            fileName="${var:logDirectory}/LogFile_on_${shortdate}.log"
+            archiveFileName="${basedir}/App_Data/LogFile.{#}.log"
+            fileName="${basedir}/App_Data/LogFile_on_${shortdate}.log"
             archiveNumbering="DateAndSequence"
             archiveAboveSize="20971520"
             archiveDateFormat="yyyyMMdd"
