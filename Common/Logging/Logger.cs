@@ -20,12 +20,20 @@ namespace Common.Logging
         public Logger(ILoggingConfig config)
         {
             desiredLogLevel = config.LogLevel;
-
-            var normalizer = new PathNormalizer();
-            var path = normalizer.Normalize(config.NlogConfigFileName);
-            loggerFactory = new LogFactory(new XmlLoggingConfiguration(path));
-            variableLogger = loggerFactory.GetLogger("messageLogger");
-            variableErrorLogger = loggerFactory.GetLogger("errorLogger");
+            if (string.IsNullOrEmpty(config.NlogConfigFileName))
+            {
+                loggerFactory = new LogFactory();
+                variableLogger = loggerFactory.GetLogger("customLogger");
+                variableErrorLogger = loggerFactory.GetLogger("customErrorLogger");
+            }
+            else
+            {
+                var normalizer = new PathNormalizer();
+                var serverPath = normalizer.Normalize(config.NlogConfigFileName);
+                loggerFactory = new LogFactory(new XmlLoggingConfiguration(serverPath));
+                variableLogger = loggerFactory.GetLogger("messageLogger");
+                variableErrorLogger = loggerFactory.GetLogger("errorLogger");
+            }
         }
 
 
