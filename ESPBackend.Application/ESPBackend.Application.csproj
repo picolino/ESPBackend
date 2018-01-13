@@ -42,8 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepositoryFactory.cs" />
+    <Compile Include="TestDataService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ESPBackend.DataAccessLayer\ESPBackend.DataAccessLayer.csproj">
+      <Project>{CFA3A0D1-1FDB-4957-AF05-D161705C63A3}</Project>
+      <Name>ESPBackend.DataAccessLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ESPBackend.Domain\ESPBackend.Domain.csproj">
       <Project>{59d817a5-a22f-4021-836f-f4387010485c}</Project>
       <Name>ESPBackend.Domain</Name>

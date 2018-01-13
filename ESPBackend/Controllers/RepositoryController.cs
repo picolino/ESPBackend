@@ -1,7 +1,8 @@
-﻿using System.Web.Http;
+﻿using System.Net;
+using System.Web.Http;
 using Common;
 using Common.Logging;
-using ESPBackend.Domain;
+using ESPBackend.Application;
 using ESPBackend.Dto;
 using ESPBackend.Models;
 
@@ -9,10 +10,11 @@ namespace ESPBackend.Controllers
 {
     [Authorize(Roles = Roles.Esp)]
     [RoutePrefix("api/v1/repo")]
-    public class RepositoryController : ApiController
+    public class RepositoryController : ServiceControllerBase
     {
         private const string CurrentClassName = nameof(HealthController);
         private ILogger Logger => LoggerFactory.CreateLogger();
+        private TestDataService TestDataService => new TestDataService(RepositoryFactory.TestDataRepository);
 
         [HttpPost]
         [Route("savetestdata")]
@@ -20,19 +22,7 @@ namespace ESPBackend.Controllers
         {
             Logger.Info(CurrentClassName, nameof(SaveData), $"SaveData request with {data}");
 
-            var insertedId = -1;
-
-            using (var dbContext = new ESPBDbContext())
-            {
-                var testData = new TestData
-                {
-                    TestString = data.TestString,
-                    UserId = TokenContext.GetUserId(Request)
-                };
-                dbContext.TestData.Add(testData);
-                dbContext.SaveChanges();
-                insertedId = testData.Id;
-            }
+            var insertedId = TestDataService.Save(data, TokenContext.GetUserId(Request));
 
             if (insertedId <= 0)
             {
@@ -47,20 +37,15 @@ namespace ESPBackend.Controllers
         public IHttpActionResult GetData([FromBody] int dataId)
         {
             Logger.Info(CurrentClassName, nameof(GetData), $"GetData request with {dataId}");
+            
+            var testData = TestDataService.GetBy(dataId);
 
-            var data = new TestData();
-
-            using (var dbContext = new ESPBDbContext())
-            {
-                data = dbContext.TestData.Find(dataId);
-            }
-
-            if (data is null)
+            if (testData is null)
             {
                 return NotFound();
             }
 
-            return Ok(data);
+            return Ok(testData);
         }
     }
 }

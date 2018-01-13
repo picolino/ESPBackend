@@ -43,7 +43,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestData.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ESPBackend.Dto\ESPBackend.Dto.csproj">
+      <Project>{3e5768c0-7546-4560-838a-897020b97911}</Project>
+      <Name>ESPBackend.Dto</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
