@@ -16,7 +16,7 @@ using OtpSharp;
 namespace Authorization.Controllers
 {
     [Authorize(Roles = Roles.User)]
-    [RoutePrefix("api/v1/manyfactor")]
+    [RoutePrefix("manyfactor")]
     public class FactorController : ApiController
     {
         private readonly AuthRepository repository;
