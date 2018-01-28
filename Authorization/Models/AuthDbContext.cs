@@ -1,11 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.Infrastructure.Annotations;
-using Authorization.Domain;
+﻿using Authorization.Domain;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Authorization.Models
 {
-    public class AuthDbContext : IdentityDbContext
+    public class AuthDbContext : IdentityDbContext<AppUser>
     {
         public AuthDbContext()
             : base("AuthDbContext")

@@ -65,11 +65,30 @@ namespace Authorization.Providers
             return user;
         }
 
+        public async Task<AppUser> FindById(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+
+            return user;
+        }
+
         public async Task<AppUser> FindEsp(string espName)
         {
             var user = await userManager.FindByNameAsync(espName);
 
             return user;
+        }
+
+        public async Task<IdentityResult> UpdateUser(AppUser user)
+        {
+            var updated = await userManager.UpdateAsync(user);
+
+            if (!updated.Succeeded)
+            {
+                throw new Exception();
+            }
+
+            return updated;
         }
 
         public void Dispose()
