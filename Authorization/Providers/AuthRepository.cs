@@ -14,12 +14,19 @@ namespace Authorization.Providers
         private readonly AuthDbContext dbContext;
         private readonly UserManager<AppUser> userManager;
 
+        private const string GoogleAuthenticatorName = "GoogleAuthenticator";
+
         public AuthRepository()
         {
             dbContext = new AuthDbContext();
             userManager = new UserManager<AppUser>(new UserStore<AppUser>(dbContext));
 
-            userManager.RegisterTwoFactorProvider("GoogleAuthenticator", new GoogleAuthenticatorTokenProvider());
+            userManager.RegisterTwoFactorProvider(GoogleAuthenticatorName, new GoogleAuthenticatorTokenProvider());
+        }
+
+        public async Task<bool> ValidateGoogleAuth(string token, string userId)
+        {
+            return await userManager.VerifyTwoFactorTokenAsync(userId, GoogleAuthenticatorName, token);
         }
 
         public async Task<IdentityResult> RegisterUser(RegisterUserModel userModel)
