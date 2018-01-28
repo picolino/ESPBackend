@@ -23,6 +23,7 @@ namespace Authorization.Providers
             context.Validated();
         }
 
+        //ВЫДАЧА ТОКЕНА ДЛЯ ПОЛЬЗОВАТЕЛЯ
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
             Logger.Info(CurrentClassName, nameof(GrantResourceOwnerCredentials), $"Token request with username: {context.UserName} and password");
@@ -53,6 +54,7 @@ namespace Authorization.Providers
             context.Validated(identity);
         }
 
+        //ВЫДАЧА ТОКЕНА ДЛЯ ESP
         public override async Task GrantCustomExtension(OAuthGrantCustomExtensionContext context)
         {
 
