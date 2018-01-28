@@ -28,8 +28,8 @@ namespace Authorization.Controllers
             repository = new AuthRepository();
         }
 
-        [HttpPost]
-        [Route("google/generatesc")]
+        [HttpGet]
+        [Route("google")]
         public async Task<IHttpActionResult> GoogleAuthGetModel()
         {
             var secretKey = KeyGeneration.GenerateRandomKey(20);
@@ -46,8 +46,8 @@ namespace Authorization.Controllers
             return Ok(model);
         }
 
-        [HttpPost]
-        [Route("google/savesc")]
+        [HttpPut]
+        [Route("google")]
         public async Task<IHttpActionResult> GoogleAuthEnable(GoogleAuthModel model)
         {
             byte[] secretKey = Base32Encoder.Decode(model.SecretKey);
@@ -64,10 +64,19 @@ namespace Authorization.Controllers
 
                 return Ok();
             }
-            else
-            {
-                return BadRequest("The Code is not valid");
-            }
+            return BadRequest("The Code is not valid");
+        }
+
+        [HttpDelete]
+        [Route("google")]
+        public async Task<IHttpActionResult> GoogleAuthDelete()
+        {
+            var user = await repository.FindById(User.Identity.GetUserId());
+            user.IsGoogleAuthenticatorEnabled = false;
+            user.GoogleAuthenticatorSecretKey = null;
+            await repository.UpdateUser(user);
+
+            return Ok();
         }
     }
 }
