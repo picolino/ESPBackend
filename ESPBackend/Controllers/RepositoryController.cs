@@ -4,7 +4,7 @@ using Common;
 using Common.Logging;
 using ESPBackend.Application;
 using ESPBackend.Dto;
-using ESPBackend.Models;
+using Microsoft.AspNet.Identity;
 
 namespace ESPBackend.Controllers
 {
@@ -21,8 +21,8 @@ namespace ESPBackend.Controllers
         public IHttpActionResult SaveData(TestDataDto data)
         {
             Logger.Info(CurrentClassName, nameof(SaveData), $"SaveData request with {data}");
-
-            var insertedId = TestDataService.Save(data, TokenContext.GetUserId(Request));
+            
+            var insertedId = TestDataService.Save(data, User.Identity.GetUserId());
 
             if (insertedId <= 0)
             {

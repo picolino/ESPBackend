@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Authorization.Domain;
 using Authorization.Models;
 using Authorization.Models.Register;
 using Common;
@@ -11,18 +12,20 @@ namespace Authorization.Providers
     public class AuthRepository : IDisposable
     {
         private readonly AuthDbContext dbContext;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<AppUser> userManager;
 
         public AuthRepository()
         {
             dbContext = new AuthDbContext();
-            userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(dbContext));
+            userManager = new UserManager<AppUser>(new UserStore<AppUser>(dbContext));
+
+            userManager.RegisterTwoFactorProvider("GoogleAuthenticator", new GoogleAuthenticatorTokenProvider());
         }
 
         public async Task<IdentityResult> RegisterUser(RegisterUserModel userModel)
         {
-            var user = new IdentityUser
-                                {
+            var user = new AppUser
+            {
                                     UserName = userModel.UserName
                                 };
 
@@ -37,11 +40,11 @@ namespace Authorization.Providers
 
         public async Task<IdentityResult> RegisterEsp(RegisterESPModel espModel)
         {
-            userManager.UserValidator = new UserValidator<IdentityUser>(userManager)
+            userManager.UserValidator = new UserValidator<AppUser>(userManager)
                                         {
                                             AllowOnlyAlphanumericUserNames = false
                                         };
-            var esp = new IdentityUser
+            var esp = new AppUser
                        {
                            UserName = espModel.ESPIdentifier
                        };
@@ -55,14 +58,14 @@ namespace Authorization.Providers
             return result;
         }
 
-        public async Task<IdentityUser> FindUser(string userName, string password)
+        public async Task<AppUser> FindUser(string userName, string password)
         {
             var user = await userManager.FindAsync(userName, password);
 
             return user;
         }
 
-        public async Task<IdentityUser> FindEsp(string espName)
+        public async Task<AppUser> FindEsp(string espName)
         {
             var user = await userManager.FindByNameAsync(espName);
 

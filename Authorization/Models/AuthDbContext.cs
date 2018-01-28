@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Infrastructure.Annotations;
+using Authorization.Domain;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Authorization.Models
@@ -15,7 +16,7 @@ namespace Authorization.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<IdentityUser>().ToTable("Users", "dbo");
+            modelBuilder.Entity<AppUser>().ToTable("Users", "dbo");
             modelBuilder.Entity<IdentityRole>().ToTable("Roles", "dbo");
             modelBuilder.Entity<IdentityUserRole>().ToTable("UsersRoles", "dbo");
             modelBuilder.Entity<IdentityUserLogin>().ToTable("UsersLogins", "dbo");

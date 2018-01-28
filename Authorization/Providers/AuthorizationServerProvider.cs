@@ -3,6 +3,7 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Authorization.Domain;
 using Common;
 using Common.Logging;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -28,13 +29,13 @@ namespace Authorization.Providers
 
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
 
-            var identityUser = new IdentityUser();
+            var appUser = new AppUser();
 
             using (var repository = new AuthRepository())
             {
-                identityUser = await repository.FindUser(context.UserName, context.Password);
+                appUser = await repository.FindUser(context.UserName, context.Password);
 
-                if (identityUser == null)
+                if (appUser == null)
                 {
 
                     context.SetError("invalid_grant", "The user name or password is incorrect.");
@@ -42,12 +43,12 @@ namespace Authorization.Providers
                 }
             }
             
-            Logger.Debug(CurrentClassName, nameof(GrantResourceOwnerCredentials), $"Successful token with username: {context.UserName} (Id - {identityUser.Id})");
+            Logger.Debug(CurrentClassName, nameof(GrantResourceOwnerCredentials), $"Successful token with username: {context.UserName} (Id - {appUser.Id})");
 
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
             identity.AddClaim(new Claim(ClaimTypes.Role, Roles.User));
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, identityUser.Id));
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, appUser.Id));
 
             context.Validated(identity);
         }
@@ -61,15 +62,15 @@ namespace Authorization.Providers
             
             Logger.Info(CurrentClassName, nameof(GrantCustomExtension), $"Token request with ESP Identifier: {espIdentifier}");
 
-            var identityEsp = new IdentityUser();
+            var appEsp = new AppUser();
 
             using (var repository = new AuthRepository())
             {
                 if (context.GrantType == "esp" && espIdentifier != null)
                 {
-                    identityEsp = await repository.FindEsp(espIdentifier);
+                    appEsp = await repository.FindEsp(espIdentifier);
 
-                    if (identityEsp == null)
+                    if (appEsp == null)
                     {
                         context.SetError("invalid_grant", "The esp identifier is incorrect.");
                         return;
@@ -83,12 +84,12 @@ namespace Authorization.Providers
 
             }
 
-            Logger.Debug(CurrentClassName, nameof(GrantCustomExtension), $"Successful token with ESP Identifier: {espIdentifier} (Id - {identityEsp.Id}");
+            Logger.Debug(CurrentClassName, nameof(GrantCustomExtension), $"Successful token with ESP Identifier: {espIdentifier} (Id - {appEsp.Id}");
 
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim(ClaimTypes.Name, espIdentifier));
             identity.AddClaim(new Claim(ClaimTypes.Role, Roles.Esp));
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, identityEsp.Id));
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, appEsp.Id));
 
             context.Validated(identity);
         }

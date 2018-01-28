@@ -142,6 +142,7 @@
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\FactorController.cs" />
     <Compile Include="Domain\AppUser.cs" />
     <Compile Include="Models\Register\RegisterESPModel.cs" />
     <Compile Include="Providers\AuthorizationServerProvider.cs" />
