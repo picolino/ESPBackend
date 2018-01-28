@@ -21,6 +21,7 @@ namespace Authorization.Controllers
     {
         private readonly AuthRepository repository;
         private const string CurrentClassName = nameof(FactorController);
+        private const string QrCodeImageGeneratorUrlPrefix = "http://qrcode.kaywa.com/img.php?s=4&d=";
         private ILogger Logger => LoggerFactory.CreateLogger();
 
         public FactorController()
@@ -35,7 +36,7 @@ namespace Authorization.Controllers
             var secretKey = KeyGeneration.GenerateRandomKey(20);
 
             var userName = User.Identity.GetUserName();
-            var barcodeUrl = KeyUrl.GetTotpUrl(secretKey, userName) + "&issuer=ESPB";
+            var barcodeUrl = QrCodeImageGeneratorUrlPrefix + KeyUrl.GetTotpUrl(secretKey, userName) + "&issuer=ESPB";
 
             var model = new GoogleAuthModel
                         {
