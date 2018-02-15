@@ -91,7 +91,7 @@ namespace Authorization.Providers
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
             //Да-да, записываем пароль в логи, все ок, логи закрыты извне, необходимо для простой отладки в случае чего =)
-            Logger.Info(CurrentClassName, nameof(GrantResourceOwnerCredentials), $"Token request with username: {context.UserName} and password {context.Password}");
+            Logger.InfoWithIp(CurrentClassName, nameof(GrantResourceOwnerCredentials), $"Token request with username: {context.UserName} and password {context.Password}");
 
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
             
@@ -113,7 +113,7 @@ namespace Authorization.Providers
 
             var espIdentifier = context.Parameters.Get("espid");
 
-            Logger.Info(CurrentClassName, nameof(GrantCustomExtension), $"Token request with ESP Identifier: {espIdentifier}");
+            Logger.InfoWithIp(CurrentClassName, nameof(GrantCustomExtension), $"Token request with ESP Identifier: {espIdentifier}");
 
             Logger.Debug(CurrentClassName, nameof(GrantCustomExtension), $"Successful token with ESP Identifier: {espIdentifier} (Id - {context.ClientId}");
 
