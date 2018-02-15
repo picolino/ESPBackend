@@ -9,15 +9,14 @@ using Microsoft.AspNet.Identity;
 namespace ESPBackend.Controllers
 {
     [Authorize(Roles = Roles.Esp)]
-    [RoutePrefix("api/v1/repo")]
+    [RoutePrefix("api/v1/testdata")]
     public class RepositoryController : ServiceControllerBase
     {
         private const string CurrentClassName = nameof(HealthController);
         private ILogger Logger => LoggerFactory.CreateLogger();
         private TestDataService TestDataService => new TestDataService(RepositoryFactory.TestDataRepository);
 
-        [HttpPost]
-        [Route("savetestdata")]
+        [HttpPut]
         public IHttpActionResult SaveData(TestDataDto data)
         {
             Logger.InfoWithIp(CurrentClassName, nameof(SaveData), $"SaveData request with {data}");
@@ -32,8 +31,7 @@ namespace ESPBackend.Controllers
             return Ok($"TestData was added. TestData Id: {insertedId}");
         }
 
-        [HttpPost]
-        [Route("gettestdata")]
+        [HttpGet]
         public IHttpActionResult GetData([FromBody] int dataId)
         {
             Logger.InfoWithIp(CurrentClassName, nameof(GetData), $"GetData request with {dataId}");
