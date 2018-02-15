@@ -22,6 +22,7 @@ namespace Authorization.Controllers
         private readonly AuthRepository repository;
         private const string CurrentClassName = nameof(FactorController);
         private const string QrCodeImageGeneratorUrlPrefix = "http://qrcode.kaywa.com/img.php?s=4&d=";
+        private const string IssuerName = "ESPB";
         private ILogger Logger => LoggerFactory.CreateLogger();
 
         public FactorController()
@@ -31,16 +32,18 @@ namespace Authorization.Controllers
 
         [HttpGet]
         [Route("google")]
-        public async Task<IHttpActionResult> GoogleAuthGetModel()
+        public async Task<IHttpActionResult> GoogleAuthEnable()
         {
             var secretKey = KeyGeneration.GenerateRandomKey(20);
 
             var userName = User.Identity.GetUserName();
-            var barcodeUrl = QrCodeImageGeneratorUrlPrefix + KeyUrl.GetTotpUrl(secretKey, userName) + "&issuer=ESPB";
+            var barcodeUrl = KeyUrl.GetTotpUrl(secretKey, userName) + $"&issuer={IssuerName}";
+
+            Logger.InfoWithIp(CurrentClassName, nameof(GoogleAuthEnable), $"Google auth enable request for user {userName}");
 
             var model = new GoogleAuthModel
                         {
-                            Barcode = HttpUtility.UrlEncode(barcodeUrl),
+                            Barcode = QrCodeImageGeneratorUrlPrefix + HttpUtility.UrlEncode(barcodeUrl),
                             SecretKey = Base32Encoder.Encode(secretKey)
                         };
 
@@ -49,9 +52,11 @@ namespace Authorization.Controllers
 
         [HttpPut]
         [Route("google")]
-        public async Task<IHttpActionResult> GoogleAuthEnable(GoogleAuthModel model)
+        public async Task<IHttpActionResult> GoogleAuthConfirm(GoogleAuthModel model)
         {
-            byte[] secretKey = Base32Encoder.Decode(model.SecretKey);
+            var secretKey = Base32Encoder.Decode(model.SecretKey);
+
+            Logger.InfoWithIp(CurrentClassName, nameof(GoogleAuthEnable), $"Google auth confirm request for user {User.Identity.GetUserName()}");
 
             long timeStepMatched = 0;
             var otp = new Totp(secretKey);
@@ -72,6 +77,8 @@ namespace Authorization.Controllers
         [Route("google")]
         public async Task<IHttpActionResult> GoogleAuthDelete()
         {
+            Logger.InfoWithIp(CurrentClassName, nameof(GoogleAuthEnable), $"Google auth delete request for user {User.Identity.GetUserName()}");
+
             var user = await repository.FindById(User.Identity.GetUserId());
             user.IsGoogleAuthenticatorEnabled = false;
             user.GoogleAuthenticatorSecretKey = null;
