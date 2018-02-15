@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HttpExtentions.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\ILoggingConfig.cs" />
     <Compile Include="Logging\Logger.cs" />

@@ -24,7 +24,7 @@ namespace ESPBackend.Controllers
         [Route("ping")]
         public IHttpActionResult Ping()
         {
-            Logger.Info(CurrentClassName, nameof(Ping), $"Ping request from {GetIPAddress()}");
+            Logger.InfoWithIp(CurrentClassName, nameof(Ping), "Ping request");
 
             var response = new PingResponseDto();
 
@@ -40,23 +40,6 @@ namespace ESPBackend.Controllers
             Logger.Debug(CurrentClassName, nameof(Ping), $"Ping response: {response}");
 
             return Ok(response);
-        }
-
-        protected string GetIPAddress()
-        {
-            System.Web.HttpContext context = System.Web.HttpContext.Current;
-            string ipAddress = context.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
-
-            if (!string.IsNullOrEmpty(ipAddress))
-            {
-                string[] addresses = ipAddress.Split(',');
-                if (addresses.Length != 0)
-                {
-                    return addresses[0];
-                }
-            }
-
-            return context.Request.ServerVariables["REMOTE_ADDR"];
         }
     }
 }

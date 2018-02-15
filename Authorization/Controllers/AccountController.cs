@@ -24,7 +24,7 @@ namespace Authorization.Controllers
         [Route("user/register")]
         public async Task<IHttpActionResult> RegisterUser(RegisterUserModel userModel)
         {
-            Logger.Info(CurrentClassName, nameof(RegisterUser), $"RegisterUser request with {userModel}");
+            Logger.InfoWithIp(CurrentClassName, nameof(RegisterUser), $"RegisterUser request with {userModel}");
 
             if (!ModelState.IsValid)
             {
@@ -42,7 +42,7 @@ namespace Authorization.Controllers
         [Route("esp/register")]
         public async Task<IHttpActionResult> RegisterEsp(RegisterESPModel espModel)
         {
-            Logger.Info(CurrentClassName, nameof(RegisterEsp), $"RegisterEsp request with {espModel}");
+            Logger.InfoWithIp(CurrentClassName, nameof(RegisterEsp), $"RegisterEsp request with {espModel}");
 
             if (!ModelState.IsValid)
             {

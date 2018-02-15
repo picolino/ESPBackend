@@ -20,7 +20,7 @@ namespace ESPBackend.Controllers
         [Route("savetestdata")]
         public IHttpActionResult SaveData(TestDataDto data)
         {
-            Logger.Info(CurrentClassName, nameof(SaveData), $"SaveData request with {data}");
+            Logger.InfoWithIp(CurrentClassName, nameof(SaveData), $"SaveData request with {data}");
             
             var insertedId = TestDataService.Save(data, User.Identity.GetUserId());
 
@@ -36,7 +36,7 @@ namespace ESPBackend.Controllers
         [Route("gettestdata")]
         public IHttpActionResult GetData([FromBody] int dataId)
         {
-            Logger.Info(CurrentClassName, nameof(GetData), $"GetData request with {dataId}");
+            Logger.InfoWithIp(CurrentClassName, nameof(GetData), $"GetData request with {dataId}");
             
             var testData = TestDataService.GetBy(dataId);
 

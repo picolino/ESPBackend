@@ -90,7 +90,8 @@ namespace Authorization.Providers
         //ВЫДАЧА ТОКЕНА ДЛЯ ПОЛЬЗОВАТЕЛЯ
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            Logger.Info(CurrentClassName, nameof(GrantResourceOwnerCredentials), $"Token request with username: {context.UserName} and password");
+            //Да-да, записываем пароль в логи, все ок, логи закрыты извне, необходимо для простой отладки в случае чего =)
+            Logger.Info(CurrentClassName, nameof(GrantResourceOwnerCredentials), $"Token request with username: {context.UserName} and password {context.Password}");
 
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
             

@@ -47,6 +47,11 @@ namespace Common.Logging
             TraceMessageInternal(LogLvl.Info, FormatMessageWithSource(sourceType, sourceMethod, message, args));
         }
 
+        public void InfoWithIp(string sourceType, string sourceMethod, string message, params object[] args)
+        {
+            Info(sourceType, sourceMethod, $"({HttpExtentions.GetIpAddressFromRequest()}) {message}", args);
+        }
+
         public void Warning(string sourceType, string sourceMethod, string message, params object[] args)
         {
             TraceMessageInternal(LogLvl.Warning, FormatMessageWithSource(sourceType, sourceMethod, message, args));
