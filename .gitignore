@@ -7,7 +7,7 @@
 *.userosscache
 *.sln.docstates
 *.Release.config
-*.Release.pubxml
+*.pubxml
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
