@@ -4,7 +4,7 @@ using System;
 
 #endregion
 
-namespace Common.Logging
+namespace Shared.Logging
 {
     public interface ILogger
     {

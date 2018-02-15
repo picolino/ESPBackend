@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESPBackend", "ESPBackend\ESPBackend.csproj", "{820EC85E-84D1-4732-8102-6B645AD07A16}"
 EndProject
@@ -13,11 +13,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESPBackend.Dto", "ESPBacken
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESPBackend.DataAccessLayer", "ESPBackend.DataAccessLayer\ESPBackend.DataAccessLayer.csproj", "{CFA3A0D1-1FDB-4957-AF05-D161705C63A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{2C5A8994-4469-4EC6-AFA0-B56816A1D0FE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Common\Shared.csproj", "{2C5A8994-4469-4EC6-AFA0-B56816A1D0FE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthorizationService", "AuthorizationService", "{C6712D86-3F77-48F5-A3EB-513589FBB75D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authorization", "Authorization\Authorization.csproj", "{6A4E3AEF-5BFF-4F29-A2AF-8FC3612DF43E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ESPB", "ESPB", "{68E709A1-FEBC-480A-9129-D144FA8B2691}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,6 +60,11 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{820EC85E-84D1-4732-8102-6B645AD07A16} = {68E709A1-FEBC-480A-9129-D144FA8B2691}
+		{F546FC40-2028-4A75-8CC5-9B7B0E8FA976} = {68E709A1-FEBC-480A-9129-D144FA8B2691}
+		{59D817A5-A22F-4021-836F-F4387010485C} = {68E709A1-FEBC-480A-9129-D144FA8B2691}
+		{3E5768C0-7546-4560-838A-897020B97911} = {68E709A1-FEBC-480A-9129-D144FA8B2691}
+		{CFA3A0D1-1FDB-4957-AF05-D161705C63A3} = {68E709A1-FEBC-480A-9129-D144FA8B2691}
 		{6A4E3AEF-5BFF-4F29-A2AF-8FC3612DF43E} = {C6712D86-3F77-48F5-A3EB-513589FBB75D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

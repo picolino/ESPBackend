@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Web.Http;
-using Common.Logging;
+using Shared.Logging;
 using ESPBackend.Dto;
 
 #endregion

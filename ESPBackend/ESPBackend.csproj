@@ -160,9 +160,9 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj">
+    <ProjectReference Include="..\Common\Shared.csproj">
       <Project>{2c5a8994-4469-4ec6-afa0-b56816a1d0fe}</Project>
-      <Name>Common</Name>
+      <Name>Shared</Name>
     </ProjectReference>
     <ProjectReference Include="..\ESPBackend.Application\ESPBackend.Application.csproj">
       <Project>{f546fc40-2028-4a75-8cc5-9b7b0e8fa976}</Project>

@@ -1,4 +1,4 @@
-﻿namespace Common.Logging
+﻿namespace Shared.Logging
 {
     public enum LogLvl
     {

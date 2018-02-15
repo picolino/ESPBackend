@@ -8,8 +8,8 @@ using System.Web.Http;
 using Authorization.Models;
 using Authorization.Providers;
 using Base32;
-using Common;
-using Common.Logging;
+using Shared;
+using Shared.Logging;
 using Microsoft.AspNet.Identity;
 using OtpSharp;
 

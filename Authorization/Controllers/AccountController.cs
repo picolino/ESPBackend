@@ -3,7 +3,7 @@ using System.Web.Http;
 using Authorization.Models;
 using Authorization.Models.Register;
 using Authorization.Providers;
-using Common.Logging;
+using Shared.Logging;
 using Microsoft.AspNet.Identity;
 
 namespace Authorization.Controllers

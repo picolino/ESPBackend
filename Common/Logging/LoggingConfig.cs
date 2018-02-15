@@ -5,7 +5,7 @@ using System.Configuration;
 
 #endregion
 
-namespace Common.Logging
+namespace Shared.Logging
 {
     public class LoggingConfig : ILoggingConfig
     {

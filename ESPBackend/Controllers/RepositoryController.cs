@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Web.Http;
-using Common;
-using Common.Logging;
+using Shared;
+using Shared.Logging;
 using ESPBackend.Application;
 using ESPBackend.Dto;
 using Microsoft.AspNet.Identity;

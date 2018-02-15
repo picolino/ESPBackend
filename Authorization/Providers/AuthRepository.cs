@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Authorization.Domain;
 using Authorization.Models;
 using Authorization.Models.Register;
-using Common;
+using Shared;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 

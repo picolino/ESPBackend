@@ -4,7 +4,7 @@ using System.Web.Hosting;
 
 #endregion
 
-namespace Common
+namespace Shared
 {
     public class PathNormalizer
     {

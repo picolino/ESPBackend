@@ -7,7 +7,7 @@ using NLog.Config;
 
 #endregion
 
-namespace Common.Logging
+namespace Shared.Logging
 {
     public class Logger : ILogger
     {
