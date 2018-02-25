@@ -19,6 +19,19 @@ namespace Authorization.Providers
         private const string CurrentClassName = nameof(AuthorizationServerProvider);
         private ILogger Logger => LoggerFactory.CreateLogger();
 
+        public override Task MatchEndpoint(OAuthMatchEndpointContext context)
+        {
+            if (context.IsTokenEndpoint && context.Request.Method == "OPTIONS")
+            {
+                context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
+                context.OwinContext.Response.Headers.Add("Access-Control-Allow-Headers", new[] { "authorization" });
+                context.RequestCompleted();
+                return Task.FromResult(0);
+            }
+
+            return base.MatchEndpoint(context);
+        }
+
         public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
             string clientId;
