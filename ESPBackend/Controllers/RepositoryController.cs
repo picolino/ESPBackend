@@ -16,6 +16,7 @@ namespace ESPBackend.Controllers
         private ILogger Logger => LoggerFactory.CreateLogger();
         private TestDataService TestDataService => new TestDataService(RepositoryFactory.TestDataRepository);
 
+        [Route]
         [HttpPut]
         public IHttpActionResult SaveData(TestDataDto data)
         {
@@ -31,6 +32,7 @@ namespace ESPBackend.Controllers
             return Ok($"TestData was added. TestData Id: {insertedId}");
         }
 
+        [Route]
         [HttpGet]
         public IHttpActionResult GetData([FromBody] int dataId)
         {
