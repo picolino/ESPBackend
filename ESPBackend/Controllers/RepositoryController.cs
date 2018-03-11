@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 using Shared;
 using Shared.Logging;
@@ -42,7 +43,7 @@ namespace ESPBackend.Controllers
 
             if (testData is null)
             {
-                return NotFound();
+                return Content(HttpStatusCode.NotFound, $"Cant find test data with ID = {id}");
             }
 
             return Ok(testData);
