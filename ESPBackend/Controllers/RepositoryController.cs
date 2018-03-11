@@ -34,11 +34,11 @@ namespace ESPBackend.Controllers
 
         [Route]
         [HttpGet]
-        public IHttpActionResult GetData([FromBody] int dataId)
+        public IHttpActionResult GetData(int id)
         {
-            Logger.InfoWithIp(CurrentClassName, nameof(GetData), $"GetData request with {dataId}");
+            Logger.InfoWithIp(CurrentClassName, nameof(GetData), $"GetData request with {id}");
             
-            var testData = TestDataService.GetBy(dataId);
+            var testData = TestDataService.GetBy(id);
 
             if (testData is null)
             {
