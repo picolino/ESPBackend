@@ -13,7 +13,7 @@ namespace ESPBackend.Controllers
     [RoutePrefix("api/v1/testdata")]
     public class RepositoryController : ServiceControllerBase
     {
-        private const string CurrentClassName = nameof(HealthController);
+        private const string CurrentClassName = nameof(RepositoryController);
         private ILogger Logger => LoggerFactory.CreateLogger();
         private TestDataService TestDataService => new TestDataService(RepositoryFactory.TestDataRepository);
 
@@ -37,13 +37,14 @@ namespace ESPBackend.Controllers
         [HttpGet]
         public IHttpActionResult GetData(int id)
         {
-            Logger.InfoWithIp(CurrentClassName, nameof(GetData), $"GetData request with {id}");
+            Logger.InfoWithIp(CurrentClassName, nameof(GetData), $"GetData request with ID = {id}");
             
             var testData = TestDataService.GetBy(id);
 
             if (testData is null)
             {
-                return Content(HttpStatusCode.NotFound, $"Cant find test data with ID = {id}");
+                var resultMsg = $"Cant find test data with ID = {id}";
+                return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, resultMsg));
             }
 
             return Ok(testData);
