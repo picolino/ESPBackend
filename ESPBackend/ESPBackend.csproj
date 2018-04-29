@@ -136,6 +136,7 @@
   <ItemGroup>
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CryptoController.cs" />
     <Compile Include="Controllers\HealthController.cs" />
     <Compile Include="Controllers\RepositoryController.cs" />
     <Compile Include="Controllers\ServiceControllerBase.cs" />
