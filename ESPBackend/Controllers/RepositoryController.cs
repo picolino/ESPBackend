@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Shared;
@@ -9,7 +10,7 @@ using Microsoft.AspNet.Identity;
 
 namespace ESPBackend.Controllers
 {
-    [Authorize(Roles = Roles.Esp)]
+    //[Authorize(Roles = Roles.Esp)]
     [RoutePrefix("api/v1/testdata")]
     public class RepositoryController : ServiceControllerBase
     {
@@ -22,7 +23,12 @@ namespace ESPBackend.Controllers
         public IHttpActionResult SaveData(TestDataDto data)
         {
             Logger.InfoWithIp(CurrentClassName, nameof(SaveData), $"SaveData request with {data}");
-            
+
+            if (data?.TestString == null)
+            {
+                return BadRequest("Something bad. Check your request.");
+            }
+
             var insertedId = TestDataService.Save(data, User.Identity.GetUserId());
 
             if (insertedId <= 0)

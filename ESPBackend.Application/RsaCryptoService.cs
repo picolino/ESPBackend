@@ -8,14 +8,14 @@ namespace ESPBackend.Application
     {
         public RsaResponseDto GenerateRsaKeyPair()
         {
-            var keyContainer = new CspParameters { KeyContainerName = Guid.NewGuid().ToString()};
+            var keyContainer = new CspParameters { KeyContainerName = Guid.NewGuid().ToString() };
             var cryptoProvider = new RSACryptoServiceProvider(keyContainer);
 
             var publicKeyXml = cryptoProvider.ToXmlString(false);
 
             return new RsaResponseDto
                    {
-                       ContainerGuid = keyContainer.KeyContainerName,
+                       KeyContainerGuid = keyContainer.KeyContainerName,
                        RsaPublicKey = publicKeyXml
                    };
         }
