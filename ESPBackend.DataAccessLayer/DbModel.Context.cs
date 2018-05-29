@@ -26,5 +26,6 @@ namespace ESPBackend.DataAccessLayer
         }
     
         public virtual DbSet<TestData> TestData { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
     }
 }

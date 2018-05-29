@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CryptoRepository.cs" />
     <Compile Include="DataContextFactory.cs" />
     <Compile Include="DbModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -67,6 +68,7 @@
       <DependentUpon>DbModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="ESPBDataContext.cs" />
+    <Compile Include="Interfaces\ICryptoRepository.cs" />
     <Compile Include="Interfaces\IDataContext.cs" />
     <Compile Include="Interfaces\IDataContextFactory.cs" />
     <Compile Include="Interfaces\ITestDataRepository.cs" />
@@ -75,6 +77,9 @@
       <DependentUpon>DbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TestDataRepository.cs" />
+    <Compile Include="Users.cs">
+      <DependentUpon>DbModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ESPBackend.Domain\ESPBackend.Domain.csproj">
@@ -91,6 +96,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>DbModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="App.Config" />
     <None Include="DbModel.edmx.diagram">
       <DependentUpon>DbModel.edmx</DependentUpon>
     </None>

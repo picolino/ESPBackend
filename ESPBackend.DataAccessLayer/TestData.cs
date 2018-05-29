@@ -17,28 +17,7 @@ namespace ESPBackend.DataAccessLayer
         public int Id { get; set; }
         public string UserId { get; set; }
         public string TestString { get; set; }
-
-        public override string ToString()
-        {
-            return $"{nameof(Id)}: {Id}, {nameof(TestString)}: {TestString}, {nameof(UserId)}: {UserId}";
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is TestData)
-            {
-                var to = obj as TestData;
-                if (to.Id == Id && to.TestString == TestString && to.UserId == UserId)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            return base.Equals(obj);
-        }
+    
+        public virtual Users Users { get; set; }
     }
 }

@@ -41,7 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EncryptedDataDto.cs" />
+    <Compile Include="AesEncryptedTestDataDto.cs" />
+    <Compile Include="RsaEncryptedDataDto.cs" />
     <Compile Include="PingResponseDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RsaResponseDto.cs" />

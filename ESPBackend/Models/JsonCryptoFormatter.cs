@@ -29,14 +29,14 @@ namespace ESPBackend.Models
             using (var reader = new StreamReader(readStream))
             {
                 var requestString = reader.ReadToEnd();
-                var encrypted = JsonConvert.DeserializeObject<EncryptedDataDto>(requestString);
+                var encrypted = JsonConvert.DeserializeObject<RsaEncryptedDataDto>(requestString);
 
                 if (encrypted.IsValid)
                 {
                     var rsaKeyContainer = new CspParameters { KeyContainerName = encrypted.KeyContainerGuid };
                     var rsaProvider = new RSACryptoServiceProvider(rsaKeyContainer);
 
-                    var encryptedDataBytes = effectiveEncoding.GetBytes(encrypted.EncryptedData);
+                    var encryptedDataBytes = effectiveEncoding.GetBytes(encrypted.RsaEncryptedData);
                     var decryptedDataBytes = rsaProvider.Decrypt(encryptedDataBytes, false);
 
                     var decryptedDataString = effectiveEncoding.GetString(decryptedDataBytes);

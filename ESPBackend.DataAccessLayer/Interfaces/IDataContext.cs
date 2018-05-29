@@ -7,5 +7,6 @@ namespace ESPBackend.DataAccessLayer.Interfaces
     {
         TestData TestDataGet(int id);
         int TestDataSave(TestDataDto testData, string userId);
+        string GetAesKeyForUser(string userId);
     }
 }

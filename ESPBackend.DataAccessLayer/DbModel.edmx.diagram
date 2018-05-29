@@ -6,6 +6,8 @@
     <edmx:Diagrams>
       <Diagram DiagramId="0a77f03e2bab4801a8b59bfa73f70a69" Name="Diagram1">
         <EntityTypeShape EntityType="ESPBModel.TestData" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESPBModel.Users" Width="1.5" PointX="0.75" PointY="8.5" />
+        <AssociationConnector Association="ESPBModel.FK_TestDataUserId_UsersId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
