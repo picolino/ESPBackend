@@ -5,6 +5,7 @@ using System.Web.Http;
 using Shared;
 using Shared.Logging;
 using ESPBackend.Application;
+using ESPBackend.Domain;
 using ESPBackend.Dto;
 using Microsoft.AspNet.Identity;
 
@@ -41,7 +42,7 @@ namespace ESPBackend.Controllers
 
                 if (insertedId <= 0)
                 {
-                    return InternalServerError(new Exception("Error occured with data saving"));
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error occured with data saving"));
                 }
 
                 return Ok($"TestData was added. TestData Id: {insertedId}");
@@ -49,7 +50,7 @@ namespace ESPBackend.Controllers
             catch (Exception e)
             {
                 Logger.Error(CurrentClassName, nameof(SaveData), e);
-                return InternalServerError(e);
+                return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e));
             }
         }
 
@@ -69,12 +70,19 @@ namespace ESPBackend.Controllers
                     return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, resultMsg));
                 }
 
-                return Ok(testData);
+                var result = new TestDataDomain
+                             {
+                                 Id = testData.Id,
+                                 TestData = testData.TestString,
+                                 UserId = testData.UserId
+                             };
+
+                return Ok(result);
             }
             catch (Exception e)
             {
                 Logger.Error(CurrentClassName, nameof(SaveData), e);
-                return InternalServerError(e);
+                return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e));
             }
             
         }
