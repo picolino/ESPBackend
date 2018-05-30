@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Authorization.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ServiceEmail" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">noreply.auth@service.local</Value>
+    </Setting>
+    <Setting Name="SendGridApiKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">SG.XXX</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

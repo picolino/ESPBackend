@@ -24,6 +24,30 @@ namespace Authorization.Providers
             userManager.RegisterTwoFactorProvider(GoogleAuthenticatorName, new GoogleAuthenticatorTokenProvider());
         }
 
+        public async Task<bool> SaveEmail(string email, string userId)
+        {
+            var result = await userManager.SetEmailAsync(userId, email);
+            return result.Succeeded;
+        }
+
+        public async Task<string> GetEmailByUserId(string userId)
+        {
+            var email = await userManager.GetEmailAsync(userId);
+            return email;
+        }
+
+        public async Task<string> GetEmailConfirmationToken(string userId)
+        {
+            var token = await userManager.GenerateEmailConfirmationTokenAsync(userId);
+            return token;
+        }
+
+        public async Task<bool> IsEmailConfirmed(string userId)
+        {
+            var result = await userManager.IsEmailConfirmedAsync(userId);
+            return result;
+        }
+
         public async Task<bool> ValidateGoogleAuth(string token, string userId)
         {
             return await userManager.VerifyTwoFactorTokenAsync(userId, GoogleAuthenticatorName, token);

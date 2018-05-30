@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -30,6 +31,8 @@ namespace Authorization.Controllers
             repository = new AuthRepository();
         }
 
+        #region Google
+
         [HttpGet]
         [Route("google")]
         public async Task<IHttpActionResult> GoogleAuthEnable()
@@ -42,10 +45,10 @@ namespace Authorization.Controllers
             Logger.InfoWithIp(CurrentClassName, nameof(GoogleAuthEnable), $"Google auth enable request for user {userName}");
 
             var model = new GoogleAuthModel
-                        {
-                            Barcode = QrCodeImageGeneratorUrlPrefix + HttpUtility.UrlEncode(barcodeUrl),
-                            SecretKey = Base32Encoder.Encode(secretKey)
-                        };
+            {
+                Barcode = QrCodeImageGeneratorUrlPrefix + HttpUtility.UrlEncode(barcodeUrl),
+                SecretKey = Base32Encoder.Encode(secretKey)
+            };
 
             return Ok(model);
         }
@@ -86,5 +89,51 @@ namespace Authorization.Controllers
 
             return Ok();
         }
+
+        #endregion
+
+        #region Email
+
+        [HttpPost]
+        [Route("email")]
+        public async Task<IHttpActionResult> SaveEmail(EmailModel email)
+        {
+            if (!email.Email.Contains("@") || !email.Email.Contains(".") || email.Email.Length < 3)
+            {
+                return BadRequest("Incorrect email format");
+            }
+
+            var isEmailSaved = await repository.SaveEmail(email.Email, User.Identity.GetUserId());
+            if (isEmailSaved)
+            {
+                return Ok();
+            }
+
+            return InternalServerError();
+        }
+
+        [HttpGet]
+        [Route("email/confirm")]
+        public async Task<IHttpActionResult> SendConfirmation()
+        {
+            var isEmailAlreadyConfirmed = await repository.IsEmailConfirmed(User.Identity.GetUserId());
+            if (isEmailAlreadyConfirmed)
+            {
+                return Ok("Email is already confirmed");
+            }
+
+            var email = await repository.GetEmailByUserId(User.Identity.GetUserId());
+            var token = await repository.GetEmailConfirmationToken(User.Identity.GetUserId());
+
+            var emailProvider = new EmailProvider();
+
+            await emailProvider.SendAsync(email, "Email Confirmation", token); //TODO: Добавить контенту красоты. + Ссылочку
+
+            return Ok("Confirmation email was sended");
+        }
+
+        #endregion
+
+
     }
 }
