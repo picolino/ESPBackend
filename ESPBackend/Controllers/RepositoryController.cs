@@ -28,12 +28,17 @@ namespace ESPBackend.Controllers
             {
                 Logger.InfoWithIp(CurrentClassName, nameof(SaveData), $"SaveData request with {testData}");
 
+                if (testData == null)
+                {
+                    return BadRequest("Something bad. Check your request.");
+                }
+
                 if (testData.IsEncryptedData)
                 {
                     testData.TestString = AesCryptoService.Decrypt(User.Identity.GetUserId(), testData.AesEncryptedData);
                 }
 
-                if (testData?.TestString == null)
+                if (string.IsNullOrEmpty(testData.TestString))
                 {
                     return BadRequest("Something bad. Check your request.");
                 }
