@@ -6,6 +6,8 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Results;
+using System.Web.Http.Routing;
 using Authorization.Models;
 using Authorization.Providers;
 using Base32;
@@ -122,14 +124,40 @@ namespace Authorization.Controllers
                 return Ok("Email is already confirmed");
             }
 
-            var email = await repository.GetEmailByUserId(User.Identity.GetUserId());
-            var token = await repository.GetEmailConfirmationToken(User.Identity.GetUserId());
+            var userId = User.Identity.GetUserId();
+
+            var email = await repository.GetEmailByUserId(userId);
+            var token = await repository.GetEmailConfirmationToken(userId);
+
+            var callbackUrl = Url.Link("GetConfirmationRoute", new { userId, token });
 
             var emailProvider = new EmailProvider();
 
-            await emailProvider.SendAsync(email, "Email Confirmation", token); //TODO: Добавить контенту красоты. + Ссылочку
+            await emailProvider.SendAsync(email, "Email Confirmation", $"For email confirmation go to the link: {callbackUrl}");
 
             return Ok("Confirmation email was sended");
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("email/getconfirm", Name = "GetConfirmationRoute")]
+        public async Task<IHttpActionResult> GetConfirmation(string userId = "", string token = "")
+        {
+            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(token))
+            {
+                return BadRequest("User Id and Token are required");
+            }
+
+            var succeed = await repository.ConfirmEmail(userId, token);
+
+            if (succeed)
+            {
+                return Ok("Ваш e-mail успешно подтвержден");
+            }
+            else
+            {
+                return BadRequest("Wrong token. Retry the operation.");
+            }
         }
 
         #endregion

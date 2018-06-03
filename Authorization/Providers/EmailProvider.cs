@@ -20,7 +20,7 @@ namespace Authorization.Providers
 
             var provider = new SendGridClient(SendGridApiKey);
             var response = await provider.SendEmailAsync(msg);
-            if (response.StatusCode != HttpStatusCode.OK)
+            if (response.StatusCode != HttpStatusCode.Accepted)
             {
                 var info = await response.Body.ReadAsStringAsync();
                 throw new Exception(info);
