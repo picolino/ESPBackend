@@ -21,7 +21,6 @@ namespace Authorization.Controllers
     public class FactorController : ApiController
     {
         private const string CurrentClassName = nameof(FactorController);
-        private const string QrCodeImageGeneratorUrlPrefix = "http://qrcode.kaywa.com/img.php?s=4&d=";
         private const string IssuerName = "ESPB";
         private readonly AuthRepository repository;
 
@@ -67,6 +66,8 @@ namespace Authorization.Controllers
 
         #endregion
 
+        #region Email
+
         [AllowAnonymous]
         [HttpGet]
         [Route("email/getconfirm", Name = "GetConfirmationRoute")]
@@ -86,7 +87,7 @@ namespace Authorization.Controllers
 
             return BadRequest("Wrong token. Retry the operation.");
         }
-        
+
         [HttpPost]
         [Route("email")]
         public async Task<IHttpActionResult> SaveEmail(EmailModel email)
@@ -122,7 +123,7 @@ namespace Authorization.Controllers
             var token = await repository.GetEmailConfirmationToken(userId);
 
             Logger.Debug(CurrentClassName, nameof(SendConfirmation), $"Generating url confirmation link...");
-            var callbackUrl = Url.Link("GetConfirmationRoute", new {userId, token});
+            var callbackUrl = Url.Link("GetConfirmationRoute", new { userId, token });
 
             var emailProvider = new EmailProvider(Logger);
 
@@ -130,5 +131,7 @@ namespace Authorization.Controllers
 
             return Ok("Confirmation email was sended");
         }
+
+        #endregion
     }
 }

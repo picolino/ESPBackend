@@ -103,12 +103,10 @@ namespace Authorization.Providers
         //ВЫДАЧА ТОКЕНА ДЛЯ ПОЛЬЗОВАТЕЛЯ
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            //Да-да, записываем пароль в логи, все ок, логи закрыты извне, необходимо для простой отладки в случае чего =)
-            Logger.InfoWithIp(CurrentClassName, nameof(GrantResourceOwnerCredentials), $"Token request with username: {context.UserName} and password {context.Password}");
+            Logger.InfoWithIp(CurrentClassName, nameof(GrantResourceOwnerCredentials), $"Token request with username: '{context.UserName}'");
 
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
             
-
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
             identity.AddClaim(new Claim(ClaimTypes.Role, Roles.User));
@@ -116,7 +114,7 @@ namespace Authorization.Providers
 
             context.Validated(identity);
 
-            Logger.Debug(CurrentClassName, nameof(GrantResourceOwnerCredentials), $"Successful token with username: {context.UserName} (Id - {context.ClientId})");
+            Logger.Debug(CurrentClassName, nameof(GrantResourceOwnerCredentials), $"Successful token with username: '{context.UserName}' (Id - {context.ClientId})");
         }
 
         //ВЫДАЧА ТОКЕНА ДЛЯ ESP
