@@ -97,6 +97,9 @@
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="SendGrid, Version=9.8.0.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sendgrid.9.9.0\lib\net452\SendGrid.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -145,17 +148,28 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\FactorController.cs" />
     <Compile Include="Domain\AppUser.cs" />
+    <Compile Include="Models\EmailModel.cs" />
     <Compile Include="Models\GoogleAuthModel.cs" />
     <Compile Include="Models\Register\RegisterESPModel.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Providers\AuthorizationServerProvider.cs" />
     <Compile Include="Models\AuthDbContext.cs" />
     <Compile Include="Providers\AuthRepository.cs" />
     <Compile Include="Models\Register\RegisterUserModel.cs" />
+    <Compile Include="Providers\EmailProvider.cs" />
     <Compile Include="Providers\GoogleAuthenticatorTokenProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

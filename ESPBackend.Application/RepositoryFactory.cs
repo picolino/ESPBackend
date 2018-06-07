@@ -8,6 +8,7 @@ namespace ESPBackend.Application
         private static IDataContextFactory DataContextFactory { get; set; }
 
         public static ITestDataRepository TestDataRepository { get; private set; }
+        public static ICryptoRepository CryptoRepository { get; private set; }
 
 
         public static void CreateDataContextFactory(string server, string database, string sqlLogin, string sqlPassword)
@@ -19,6 +20,7 @@ namespace ESPBackend.Application
         private static void CreateRepositories()
         {
             TestDataRepository = new TestDataRepository(DataContextFactory);
+            CryptoRepository = new CryptoRepository(DataContextFactory);
         }
     }
 }
