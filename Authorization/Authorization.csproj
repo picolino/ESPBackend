@@ -187,7 +187,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>10611</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://192.168.1.37/auth</IISUrl>
+          <IISUrl>http://localhost/auth</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
