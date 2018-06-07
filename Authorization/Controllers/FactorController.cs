@@ -30,7 +30,7 @@ namespace Authorization.Controllers
 
         public FactorController()
         {
-            repository = new AuthRepository();
+            repository = new AuthRepository(Logger);
         }
 
         #region Google
@@ -59,11 +59,13 @@ namespace Authorization.Controllers
         [Route("google")]
         public async Task<IHttpActionResult> GoogleAuthConfirm(GoogleAuthModel model)
         {
+            Logger.Debug(CurrentClassName, nameof(GoogleAuthConfirm), $"Decoding secret key '{model.SecretKey}'");
             var secretKey = Base32Encoder.Decode(model.SecretKey);
 
-            Logger.InfoWithIp(CurrentClassName, nameof(GoogleAuthEnable), $"Google auth confirm request for user {User.Identity.GetUserName()}");
+            Logger.InfoWithIp(CurrentClassName, nameof(GoogleAuthConfirm), $"Google auth confirm request for user {User.Identity.GetUserName()}");
 
             long timeStepMatched = 0;
+            Logger.Debug(CurrentClassName, nameof(GoogleAuthConfirm), $"Generating TOTP-key");
             var otp = new Totp(secretKey);
 
             if (otp.VerifyTotp(model.InputCode, out timeStepMatched))
@@ -100,11 +102,12 @@ namespace Authorization.Controllers
         [Route("email")]
         public async Task<IHttpActionResult> SaveEmail(EmailModel email)
         {
+            Logger.InfoWithIp(CurrentClassName, nameof(SaveEmail), $"Saving emai requestl '{email.Email}'");
             if (!email.Email.Contains("@") || !email.Email.Contains(".") || email.Email.Length < 3)
             {
                 return BadRequest("Incorrect email format");
             }
-
+            
             var isEmailSaved = await repository.SaveEmail(email.Email, User.Identity.GetUserId());
             if (isEmailSaved)
             {
@@ -118,20 +121,21 @@ namespace Authorization.Controllers
         [Route("email/confirm")]
         public async Task<IHttpActionResult> SendConfirmation()
         {
-            var isEmailAlreadyConfirmed = await repository.IsEmailConfirmed(User.Identity.GetUserId());
+            var userId = User.Identity.GetUserId();
+            Logger.InfoWithIp(CurrentClassName, nameof(SendConfirmation), $"Send confirmation to email request for user id '{userId}'");
+            var isEmailAlreadyConfirmed = await repository.IsEmailConfirmed(userId);
             if (isEmailAlreadyConfirmed)
             {
                 return Ok("Email is already confirmed");
             }
-
-            var userId = User.Identity.GetUserId();
-
+            
             var email = await repository.GetEmailByUserId(userId);
             var token = await repository.GetEmailConfirmationToken(userId);
 
+            Logger.Debug(CurrentClassName, nameof(SendConfirmation), $"Generating url confirmation link...");
             var callbackUrl = Url.Link("GetConfirmationRoute", new { userId, token });
 
-            var emailProvider = new EmailProvider();
+            var emailProvider = new EmailProvider(Logger);
 
             await emailProvider.SendAsync(email, "Email Confirmation", $"For email confirmation go to the link: {callbackUrl}");
 

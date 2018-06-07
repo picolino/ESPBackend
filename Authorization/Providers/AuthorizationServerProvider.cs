@@ -35,7 +35,7 @@ namespace Authorization.Providers
         public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
             string clientId;
-            using (var repository = new AuthRepository())
+            using (var repository = new AuthRepository(Logger))
             {
                 AppUser user;
                 var grantType = context.Parameters.Get("grant_type");
