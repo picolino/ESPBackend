@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Authorization.Domain;
+using Authorization.Properties;
 using Shared;
 using Shared.Logging;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -67,6 +68,12 @@ namespace Authorization.Providers
                                 context.SetError("invalid_grant", "TOTP code is incorrect");
                                 return;
                             }
+                        }
+
+                        if (Settings.Default.RequiredEmailConfirmation || !user.EmailConfirmed)
+                        {
+                            context.SetError("invalid_grant", "Email confirmation is required");
+                            return;
                         }
 
                         break;
