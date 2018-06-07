@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
+﻿#region Usings
+
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.Results;
-using System.Web.Http.Routing;
 using Authorization.Models;
 using Authorization.Providers;
+using Authorization.Services.Modules;
 using Base32;
-using Shared;
-using Shared.Logging;
 using Microsoft.AspNet.Identity;
 using OtpSharp;
+using Shared;
+using Shared.Logging;
+
+#endregion
 
 namespace Authorization.Controllers
 {
@@ -22,62 +20,48 @@ namespace Authorization.Controllers
     [RoutePrefix("manyfactor")]
     public class FactorController : ApiController
     {
-        private readonly AuthRepository repository;
         private const string CurrentClassName = nameof(FactorController);
         private const string QrCodeImageGeneratorUrlPrefix = "http://qrcode.kaywa.com/img.php?s=4&d=";
         private const string IssuerName = "ESPB";
-        private ILogger Logger => LoggerFactory.CreateLogger();
+        private readonly AuthRepository repository;
+
+        private readonly GoogleAuthenticatorModule googleAuthModule;
 
         public FactorController()
         {
             repository = new AuthRepository(Logger);
+            googleAuthModule = new GoogleAuthenticatorModule(Logger, repository, IssuerName);
         }
 
-        #region Google
+        private ILogger Logger => LoggerFactory.CreateLogger();
 
+        [AllowAnonymous]
         [HttpGet]
-        [Route("google")]
-        public async Task<IHttpActionResult> GoogleAuthEnable()
+        [Route("email/getconfirm", Name = "GetConfirmationRoute")]
+        public async Task<IHttpActionResult> GetConfirmation(string userId = "", string token = "")
         {
-            var secretKey = KeyGeneration.GenerateRandomKey(20);
-
-            var userName = User.Identity.GetUserName();
-            var barcodeUrl = KeyUrl.GetTotpUrl(secretKey, userName) + $"&issuer={IssuerName}";
-
-            Logger.InfoWithIp(CurrentClassName, nameof(GoogleAuthEnable), $"Google auth enable request for user {userName}");
-
-            var model = new GoogleAuthModel
+            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(token))
             {
-                Barcode = QrCodeImageGeneratorUrlPrefix + HttpUtility.UrlEncode(barcodeUrl),
-                SecretKey = Base32Encoder.Encode(secretKey)
-            };
+                return BadRequest("User Id and Token are required");
+            }
 
-            return Ok(model);
+            var succeed = await repository.ConfirmEmail(userId, token);
+
+            if (succeed)
+            {
+                return Ok("Ваш e-mail успешно подтвержден");
+            }
+
+            return BadRequest("Wrong token. Retry the operation.");
         }
 
         [HttpPut]
         [Route("google")]
-        public async Task<IHttpActionResult> GoogleAuthConfirm(GoogleAuthModel model)
+        public async Task<IHttpActionResult> GoogleAuthConfirm(GoogleAuthConfirmationModel confirmationModel)
         {
-            Logger.Debug(CurrentClassName, nameof(GoogleAuthConfirm), $"Decoding secret key '{model.SecretKey}'");
-            var secretKey = Base32Encoder.Decode(model.SecretKey);
-
             Logger.InfoWithIp(CurrentClassName, nameof(GoogleAuthConfirm), $"Google auth confirm request for user {User.Identity.GetUserName()}");
-
-            long timeStepMatched = 0;
-            Logger.Debug(CurrentClassName, nameof(GoogleAuthConfirm), $"Generating TOTP-key");
-            var otp = new Totp(secretKey);
-
-            if (otp.VerifyTotp(model.InputCode, out timeStepMatched))
-            {
-                var user = await repository.FindById(User.Identity.GetUserId());
-                user.IsGoogleAuthenticatorEnabled = true;
-                user.GoogleAuthenticatorSecretKey = model.SecretKey;
-                await repository.UpdateUser(user);
-
-                return Ok();
-            }
-            return BadRequest("The Code is not valid");
+            await googleAuthModule.Confirm(confirmationModel, User.Identity.GetUserId());
+            return Ok();
         }
 
         [HttpDelete]
@@ -85,18 +69,19 @@ namespace Authorization.Controllers
         public async Task<IHttpActionResult> GoogleAuthDelete()
         {
             Logger.InfoWithIp(CurrentClassName, nameof(GoogleAuthEnable), $"Google auth delete request for user {User.Identity.GetUserName()}");
-
-            var user = await repository.FindById(User.Identity.GetUserId());
-            user.IsGoogleAuthenticatorEnabled = false;
-            user.GoogleAuthenticatorSecretKey = null;
-            await repository.UpdateUser(user);
-
+            await googleAuthModule.Disable(User.Identity.GetUserId());
             return Ok();
         }
 
-        #endregion
-
-        #region Email
+        [HttpGet]
+        [Route("google")]
+        public async Task<IHttpActionResult> GoogleAuthEnable()
+        {
+            var userName = User.Identity.GetUserName();
+            Logger.InfoWithIp(CurrentClassName, nameof(GoogleAuthConfirm), $"Google auth confirm request for user {userName}");
+            var secrets = await googleAuthModule.GetSecret(userName);
+            return Ok(secrets);
+        }
 
         [HttpPost]
         [Route("email")]
@@ -107,7 +92,7 @@ namespace Authorization.Controllers
             {
                 return BadRequest("Incorrect email format");
             }
-            
+
             var isEmailSaved = await repository.SaveEmail(email.Email, User.Identity.GetUserId());
             if (isEmailSaved)
             {
@@ -128,12 +113,12 @@ namespace Authorization.Controllers
             {
                 return Ok("Email is already confirmed");
             }
-            
+
             var email = await repository.GetEmailByUserId(userId);
             var token = await repository.GetEmailConfirmationToken(userId);
 
             Logger.Debug(CurrentClassName, nameof(SendConfirmation), $"Generating url confirmation link...");
-            var callbackUrl = Url.Link("GetConfirmationRoute", new { userId, token });
+            var callbackUrl = Url.Link("GetConfirmationRoute", new {userId, token});
 
             var emailProvider = new EmailProvider(Logger);
 
@@ -141,31 +126,5 @@ namespace Authorization.Controllers
 
             return Ok("Confirmation email was sended");
         }
-
-        [AllowAnonymous]
-        [HttpGet]
-        [Route("email/getconfirm", Name = "GetConfirmationRoute")]
-        public async Task<IHttpActionResult> GetConfirmation(string userId = "", string token = "")
-        {
-            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(token))
-            {
-                return BadRequest("User Id and Token are required");
-            }
-
-            var succeed = await repository.ConfirmEmail(userId, token);
-
-            if (succeed)
-            {
-                return Ok("Ваш e-mail успешно подтвержден");
-            }
-            else
-            {
-                return BadRequest("Wrong token. Retry the operation.");
-            }
-        }
-
-        #endregion
-
-
     }
 }

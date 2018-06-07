@@ -1,6 +1,6 @@
 ﻿namespace Authorization.Models
 {
-    public class GoogleAuthModel
+    public class GoogleAuthConfirmationModel
     {
         public string InputCode { get; set; }
         public string SecretKey { get; set; }

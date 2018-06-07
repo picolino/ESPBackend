@@ -150,7 +150,7 @@
     <Compile Include="Domain\AppUser.cs" />
     <Compile Include="IdentityResultException.cs" />
     <Compile Include="Models\EmailModel.cs" />
-    <Compile Include="Models\GoogleAuthModel.cs" />
+    <Compile Include="Models\GoogleAuthConfirmationModel.cs" />
     <Compile Include="Models\Register\RegisterESPModel.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -163,6 +163,8 @@
     <Compile Include="Models\Register\RegisterUserModel.cs" />
     <Compile Include="Providers\EmailProvider.cs" />
     <Compile Include="Providers\GoogleAuthenticatorTokenProvider.cs" />
+    <Compile Include="Services\Modules\GoogleAuthenticatorModule.cs" />
+    <Compile Include="Services\Modules\ModuleBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
