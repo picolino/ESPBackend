@@ -16,7 +16,7 @@ namespace Authorization.Controllers
 
         public AccountController()
         {
-            repository = new AuthRepository();
+            repository = new AuthRepository(Logger);
         }
         
         [HttpPost]
@@ -28,13 +28,12 @@ namespace Authorization.Controllers
 
             if (!ModelState.IsValid)
             {
+                Logger.Debug(CurrentClassName, nameof(RegisterUser), $"Model state is not valid. Returning 'BadRequest'");
                 return BadRequest(ModelState);
             }
 
-            var result = await repository.RegisterUser(userModel);
-
-            var errorResult = GetErrorResult(result);
-            return errorResult ?? Ok();
+            await repository.RegisterUser(userModel);
+            return Ok();
         }
 
         [HttpPost]
