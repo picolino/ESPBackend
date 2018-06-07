@@ -35,25 +35,7 @@ namespace Authorization.Controllers
 
         private ILogger Logger => LoggerFactory.CreateLogger();
 
-        [AllowAnonymous]
-        [HttpGet]
-        [Route("email/getconfirm", Name = "GetConfirmationRoute")]
-        public async Task<IHttpActionResult> GetConfirmation(string userId = "", string token = "")
-        {
-            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(token))
-            {
-                return BadRequest("User Id and Token are required");
-            }
-
-            var succeed = await repository.ConfirmEmail(userId, token);
-
-            if (succeed)
-            {
-                return Ok("Ваш e-mail успешно подтвержден");
-            }
-
-            return BadRequest("Wrong token. Retry the operation.");
-        }
+        #region GoogleAuthenticator
 
         [HttpPut]
         [Route("google")]
@@ -83,6 +65,28 @@ namespace Authorization.Controllers
             return Ok(secrets);
         }
 
+        #endregion
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("email/getconfirm", Name = "GetConfirmationRoute")]
+        public async Task<IHttpActionResult> GetConfirmation(string userId = "", string token = "")
+        {
+            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(token))
+            {
+                return BadRequest("User Id and Token are required");
+            }
+
+            var succeed = await repository.ConfirmEmail(userId, token);
+
+            if (succeed)
+            {
+                return Ok("Ваш e-mail успешно подтвержден");
+            }
+
+            return BadRequest("Wrong token. Retry the operation.");
+        }
+        
         [HttpPost]
         [Route("email")]
         public async Task<IHttpActionResult> SaveEmail(EmailModel email)
